@@ -10,12 +10,15 @@ class UsersController < ApplicationController
 
   # GET /users/1
   def show
-    render json: @user
+    if @user
+      render json: @user
+    else
+      render json: ['not found'], status: :not_found
+    end
   end
 
   # POST /users
   def create
-    binding.pry
     @user = User.new(user_params)
 
     if @user.save
@@ -42,7 +45,7 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = User.find_by_id(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
